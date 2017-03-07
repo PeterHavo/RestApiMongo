@@ -5,15 +5,22 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
+//bellow var are for sending email via nodemailer and SES from amazon webservices
+var nodemailer = require('nodemailer');
+//var ses = require('nodemailer-ses-transport');
+
+var sendMailik = require('./sendMail.js')
+
+
 // bellow this variables I was testing faker generator https://github.com/Marak/faker.js/blob/master/examples/node/minimal-usage.js
 const faker = require('faker');
 const limitation = 10;
 faker.locate ='ger';
 const generatedObj = [];
 var t0,t1;
-var SNS = {};
 
-SNS = {
+
+var SNS = {
         AWS_ACCESS_KEY: 'AKIAJOCZOVNLXBRTNRLQ',
         AWS_SECRET_KEY: 'cxWGQHShCvEzjYrZiKpkjyNyeo/SlzoDE1RJwUpp',
         REGION: 'eu-central-1',
@@ -23,7 +30,120 @@ SNS = {
        /* The new user will be granted the following IAM policy:
         "Statement": [{  "Effect":"Allow",  "Action":"ses:SendRawEmail",  "Resource":"*"}]*/
         };
- console.log(SNS.AWS_SECRET_KEY);       
+
+        sendMailik.sendMailok();
+
+/*
+var transporter = nodemailer.createTransport(ses({
+    accessKeyId: SNS.AWS_ACCESS_KEY,
+    secretAccessKey: SNS.AWS_SECRET_KEY,
+    REGION: 'eu-central-1',
+    SMTP_Username:'AKIAIHYDE5HJGXLEJXHQ',
+    SMTP_Password: 'AsKAYK9cpDfd5xsiYEqIpI61E8ttYkLYFB7O565IDg5Y',
+    IAM_user:'ses-smtp-user.20170306-134204'
+}));
+
+
+transporter.sendMail({
+    from: 'noreply@exfa.cloud',
+    to: 'one4u2@gmail.com',
+    subject: 'My Amazon SES Simple Email',
+    text: 'Amazon SES is cool'
+  });*/
+/*
+
+
+exports.submit = function (req, res) {
+
+    var transport = nodemailer.createTransport("SMTP", { // Yes. SMTP!
+        host: "email-smtp.eu-west-1.amazonaws.com", // Amazon email SMTP hostname
+        secureConnection: true, // use SSL
+        port: 465, // port for secure SMTP
+        auth: {
+            user: "AKIAIHYDE5HJGXLEJXHQ", // Use from Amazon Credentials
+            pass: "AsKAYK9cpDfd5xsiYEqIpI61E8ttYkLYFB7O565IDg5Y" // Use from Amazon Credentials
+        }
+    });
+
+    var mailOptions = {
+        from: "Gabriel Manolache <gmanolache@exfa.cloud>", // sender address
+        to: "Gabriel Manolache <one4u2@gmail.com.com>", // list of receivers
+        subject: "User registerd", // Subject line
+        html: "<b>New user registered!</b>" // email body
+    };
+
+    // send mail with defined transport object
+    transport.sendMail(mailOptions, function(error, response){
+        if(error){
+            console.log(error);
+        }else{
+            console.log("Message sent: " + response.message);
+        }
+
+        transport.close(); // shut down the connection pool, no more messages
+    });
+
+    res.send('OK');
+};*/
+
+
+/*var nodemailer = require('nodemailer');
+    var sesTransport = require('nodemailer-ses-transport');
+
+    var SESCREDENTIALS = {
+      accessKeyId : "AKIAJOCZOVNLXBRTNRLQ" ,
+      secretAccessKey : "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"
+    };
+
+    var transporter = nodemailer.createTransport(sesTransport({
+        accessKeyId: SESCREDENTIALS.accessKeyId,
+        secretAccessKey: SESCREDENTIALS.secretAccessKey,
+        region : "eu-west-1",
+        rateLimit: 5
+    }));
+
+
+
+      var mailOptions = {
+          from: 'FromName <test@exfa.cloud>',
+          to: 'one4u2@gmail.com', // list of receivers
+          subject: 'Amazon SES Template TesT', // Subject line
+          html: "<p>Mail message</p>" 
+      };
+
+      // send mail with defined transport object
+      transporter.sendMail(mailOptions, function(error, info){
+          if(error){
+              console.log(error);
+          }else{
+              console.log('Message sent: ' + info);
+          }
+      });
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 t0 = new Date().getTime();
 
