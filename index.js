@@ -20,107 +20,17 @@ const generatedObj = [];
 var t0,t1;
 
 
-var SNS = {
-        AWS_ACCESS_KEY: 'AKIAJOCZOVNLXBRTNRLQ',
-        AWS_SECRET_KEY: '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',
-        REGION: 'eu-central-1',
-        SMTP_Username:'AKIAIHYDE5HJGXLEJXHQ',
-        SMTP_Password: 'AsKAYK9cpDfd5xsiYEqIpI61E8ttYkLYFB7O565IDg5Y',
-        IAM_user:'ses-smtp-user.20170306-134204' //IAM user for SMTP authentication with Amazon SES 
-       /* The new user will be granted the following IAM policy:
-        "Statement": [{  "Effect":"Allow",  "Action":"ses:SendRawEmail",  "Resource":"*"}]*/
-        };
+//setup SES transfer
 
-        sendMailik.sendMailok();
-
-/*
-var transporter = nodemailer.createTransport(ses({
-    accessKeyId: SNS.AWS_ACCESS_KEY,
-    secretAccessKey: SNS.AWS_SECRET_KEY,
-    REGION: 'eu-central-1',
-    SMTP_Username:'AKIAIHYDE5HJGXLEJXHQ',
-    SMTP_Password: 'AsKAYK9cpDfd5xsiYEqIpI61E8ttYkLYFB7O565IDg5Y',
-    IAM_user:'ses-smtp-user.20170306-134204'
-}));
+var sender = 'FromName <test@exfa.cloud>';
+var to = 'peter.haviar@protonmail.com';
+var subject = 'Amazon SES Template TesT using module';
+var mailMessage = "<h2>This is test message</h2><p>hello Peter from node js </p>";
 
 
-transporter.sendMail({
-    from: 'noreply@exfa.cloud',
-    to: 'one4u2@gmail.com',
-    subject: 'My Amazon SES Simple Email',
-    text: 'Amazon SES is cool'
-  });*/
-/*
+//sendMailik.sendMailok(sender, to, subject, mailMessage );
 
 
-exports.submit = function (req, res) {
-
-    var transport = nodemailer.createTransport("SMTP", { // Yes. SMTP!
-        host: "email-smtp.eu-west-1.amazonaws.com", // Amazon email SMTP hostname
-        secureConnection: true, // use SSL
-        port: 465, // port for secure SMTP
-        auth: {
-            user: "AKIAIHYDE5HJGXLEJXHQ", // Use from Amazon Credentials
-            pass: "AsKAYK9cpDfd5xsiYEqIpI61E8ttYkLYFB7O565IDg5Y" // Use from Amazon Credentials
-        }
-    });
-
-    var mailOptions = {
-        from: "Gabriel Manolache <gmanolache@exfa.cloud>", // sender address
-        to: "Gabriel Manolache <one4u2@gmail.com.com>", // list of receivers
-        subject: "User registerd", // Subject line
-        html: "<b>New user registered!</b>" // email body
-    };
-
-    // send mail with defined transport object
-    transport.sendMail(mailOptions, function(error, response){
-        if(error){
-            console.log(error);
-        }else{
-            console.log("Message sent: " + response.message);
-        }
-
-        transport.close(); // shut down the connection pool, no more messages
-    });
-
-    res.send('OK');
-};*/
-
-
-/*var nodemailer = require('nodemailer');
-    var sesTransport = require('nodemailer-ses-transport');
-
-    var SESCREDENTIALS = {
-      accessKeyId : "AKIAJOCZOVNLXBRTNRLQ" ,
-      secretAccessKey : "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"
-    };
-
-    var transporter = nodemailer.createTransport(sesTransport({
-        accessKeyId: SESCREDENTIALS.accessKeyId,
-        secretAccessKey: SESCREDENTIALS.secretAccessKey,
-        region : "eu-west-1",
-        rateLimit: 5
-    }));
-
-
-
-      var mailOptions = {
-          from: 'FromName <test@exfa.cloud>',
-          to: 'one4u2@gmail.com', // list of receivers
-          subject: 'Amazon SES Template TesT', // Subject line
-          html: "<p>Mail message</p>" 
-      };
-
-      // send mail with defined transport object
-      transporter.sendMail(mailOptions, function(error, info){
-          if(error){
-              console.log(error);
-          }else{
-              console.log('Message sent: ' + info);
-          }
-      });
-
-*/
 
 
 
@@ -293,7 +203,60 @@ app.delete('/api/contacts/:id', (request, response) => {
 
 });
 
+var isMomHappy = true;
 
+// Promise
+var willIGetNewPhone = new Promise(
+    function (resolve, reject) {
+        if (isMomHappy) {
+            var phone = {
+                brand: 'Samsung',
+                color: 'black'
+            };
+            resolve(phone); // fulfilled
+        } else {
+            var reason = new Error('mom is not happy');
+            reject(reason); // reject
+        }
+
+    }
+);
+
+/* ES5 */
+
+
+// call our promise
+var askMom = function () {
+    willIGetNewPhone
+        .then(function (fulfilled) {
+            // yay, you got a new phone
+            console.log(fulfilled);
+         // output: { brand: 'Samsung', color: 'black' }
+        })
+        .catch(function (error) {
+            // oops, mom don't buy it
+            console.log(error.message);
+         // output: 'mom is not happy'
+        });
+};
+
+askMom();
+
+var model = [];
+var test = [1,2,2,45,6,];
+
+function testArray(array){
+for(var i = 0; i < array.length; i++) {
+    if(array.indexOf(array[i]) === i) {
+        model.push(array[i]);
+    } else {
+	   console.log('I found duplicate!')
+	}
+}
+}
+
+testArray(test);
+console.log(model);
 
 
 app.listen(port, hostname, () => {

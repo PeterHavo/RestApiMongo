@@ -1,36 +1,26 @@
 var nodemailer = require('nodemailer');
 var sesTransport = require('nodemailer-ses-transport');
-
-var SESCREDENTIALS = {
-		accessKeyId : "AKIAJOCZOVNLXBRTNRLQ" ,
-		secretAccessKey : "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"
-	};
+var prodconf = require('./config/config.prod.js');
 
 
 module.exports = {
 	//AWS SMTP credentials to access AWS SES service
 
-	
+	sendMailok: function (sender, to, subject, mailMessage){
 
-
-
-
-
-	sendMailok: function (){
-
-
+		//var sender = sender;
 		var transporter = nodemailer.createTransport(sesTransport({
-			accessKeyId: SESCREDENTIALS.accessKeyId,
-			secretAccessKey: SESCREDENTIALS.secretAccessKey,
+			accessKeyId: prodconf.SES.AWS_ACCESS_KEY,
+			secretAccessKey: prodconf.SES. AWS_SECRET_KEY,
 			region : "eu-west-1",
 			rateLimit: 5
 		}));
 
 		var mailOptions = {
-			from: 'FromName <test@exfa.cloud>',
-          to: 'one4u2@gmail.com', // list of receivers
-          subject: 'Amazon SES Template TesT using module', // Subject line
-          html: "<p>Mail message</p>" 
+		  from: sender,
+          to: to, // list of receivers
+          subject: subject, // Subject line
+          html: mailMessage
       };
 
       // send mail with defined transport object
@@ -44,6 +34,8 @@ module.exports = {
       });
 
   }
+
+  
 
 
 }
